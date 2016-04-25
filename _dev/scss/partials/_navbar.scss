@@ -1,0 +1,17 @@
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+
+  .page-listing {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    background-color: yellow;
+
+    .single-page-link {
+      background-color: green;
+      border-left: 1px solid red;
+    }
+  }
+}
