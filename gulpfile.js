@@ -4,10 +4,13 @@ const gulp   = require('gulp'),
       sass   = require('gulp-sass'),
       cssnext = require('postcss-cssnext'), //includes autoprefixer in build
       will_change = require('postcss-will-change'), 
-      sourcemaps = require('gulp-sourcemaps');
-
-// define the default task and add the watch task to it
-gulp.task('default', ['watch']);
+      sourcemaps = require('gulp-sourcemaps'),
+      child = require('child_process'),
+      gutil = require('gulp-util'),
+      browserSync = require('browser-sync').create(),
+      //
+      scssFiles = '_dev/scss/**/*.scss',
+      siteRoot = '_site';
 
 // compile scss partials
 gulp.task('compile-scss', function() {
@@ -16,7 +19,7 @@ gulp.task('compile-scss', function() {
     cssnext
   ]
 
-  return gulp.src('_dev/scss/**/*.scss')
+  return gulp.src(scssFiles)
     .pipe(sourcemaps.init())
     .pipe(sass())
     .pipe(postcss(processors))
@@ -24,7 +27,36 @@ gulp.task('compile-scss', function() {
     .pipe(gulp.dest('assets/css'));
 });
 
-// configure which files to watch and what tasks to use on file changes
-gulp.task('watch', function() {
-  gulp.watch('_dev/scss/**/*.scss', ['compile-scss']);
+// launch jekyll server
+gulp.task('jekyll', () => {
+  const jekyll = child.spawn('jekyll', ['serve',
+    '--watch',
+    '--incremental',
+    '--drafts'
+  ]);
+
+  const jekyllLogger = (buffer) => {
+    buffer.toString()
+      .split(/\n/)
+      .forEach((message) => gutil.log('Jekyll: ' + message));
+  };
+
+  jekyll.stdout.on('data', jekyllLogger);
+  jekyll.stderr.on('data', jekyllLogger);
 });
+
+// browswersync + files to watch for compiling
+gulp.task('serve', () => {
+  browserSync.init({
+    files: [siteRoot + '/**'],
+    port: 4000,
+    server: {
+      baseDir: siteRoot
+    }
+  });
+
+  gulp.watch(scssFiles, ['compile-scss']);
+});
+
+// gulp
+gulp.task('default', ['compile-scss', 'jekyll', 'serve']);

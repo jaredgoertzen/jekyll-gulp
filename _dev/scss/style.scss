@@ -2,9 +2,10 @@
 
 .element {
   display: flex;
+  color: green;
 }
 
 .will-change {
-  background: $medium-blue;
+  background: $dark-blue;
   will-change: opacity;
 }
