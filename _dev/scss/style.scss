@@ -1,0 +1,10 @@
+@import 'partials/variables';
+
+.element {
+  display: flex;
+}
+
+.will-change {
+  background: $medium-blue;
+  will-change: opacity;
+}

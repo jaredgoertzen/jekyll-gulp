@@ -1,11 +1,16 @@
 {
-  "name": "jekyll-gulp-setup",
+  "name": "jekyll-gulp",
   "version": "1.0.0",
   "description": "Setup jekyll and gulp to work nice",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "gulp-postcss": "^6.1.0",
+    "gulp-sass": "^2.3.1",
+    "gulp-sourcemaps": "^2.0.0-alpha",
+    "postcss-cssnext": "^2.5.2",
+    "postcss-will-change": "^1.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
